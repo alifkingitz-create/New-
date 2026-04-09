@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Love ❤️</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<style>
+body{
+  margin:0;
+  background:black;
+  overflow:hidden;
+  font-family:sans-serif;
+}
+
+.page{
+  display:none;
+  width:100%;
+  height:100vh;
+  justify-content:center;
+  align-items:center;
+  position:absolute;
+}
+.active{display:flex}
+
+/* swipe */
+.swipe{
+  background:#F1F7F7;
+  width:200px;
+  height:60px;
+  border-radius:50px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+}
+
+/* login */
+.form{
+  padding:20px;
+  border:2px solid white;
+  background:rgba(0,255,240,0.4);
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+/* phone */
+.phone{
+  width:200px;
+  height:350px;
+  background:black;
+  border-radius:20px;
+  overflow:hidden;
+}
+video{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+/* envelope */
+.env{
+  width:120px;
+  height:90px;
+  background:#ff5e5e;
+  position:relative;
+  cursor:pointer;
+}
+.env:before{
+  content:'';
+  position:absolute;
+  width:0;height:0;
+  border-left:60px solid transparent;
+  border-right:60px solid transparent;
+  border-top:50px solid #c94444;
+  top:0;
+}
+.env img{
+  position:absolute;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  top:0;
+  left:0;
+  display:none;
+}
+.env.open img{display:block}
+
+/* popup */
+#popup{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:black;
+  display:none;
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
+}
+#popup img{
+  max-width:90%;
+}
+</style>
+</head>
+
+<body>
+
+<audio id="music" src="song.mp3" loop></audio>
+
+<!-- PAGE 1 -->
+<div id="p1" class="page active">
+  <div class="swipe" onclick="start();go(2)">Start ❤️</div>
+</div>
+
+<!-- PAGE 2 -->
+<div id="p2" class="page">
+  <form class="form" onsubmit="login(event)">
+    <input placeholder="username">
+    <input id="pass" type="password" placeholder="password">
+    <button>Login</button>
+  </form>
+</div>
+
+<!-- PAGE 3 -->
+<div id="p3" class="page">
+  <div class="phone">
+    <video id="cam" autoplay></video>
+  </div>
+</div>
+
+<!-- PAGE 4 -->
+<div id="p4" class="page">
+  <h1 style="color:white">Loading...</h1>
+</div>
+
+<!-- PAGE 5 -->
+<div id="p5" class="page" style="flex-direction:column;gap:20px">
+
+<div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center">
+
+<div class="env" onclick="openImg('img1.jpg')"></div>
+<div class="env" onclick="openImg('img2.jpg')"></div>
+<div class="env" onclick="openImg('img3.jpg')"></div>
+<div class="env" onclick="openImg('img4.jpg')"></div>
+<div class="env" onclick="openImg('img5.jpg')"></div>
+
+</div>
+
+<button onclick="go(6)" style="padding:10px 20px">Next ❤️</button>
+
+</div>
+
+<!-- popup -->
+<div id="popup">
+  <img id="big">
+  <button onclick="closeImg()">Close</button>
+</div>
+
+<!-- PAGE 6 -->
+<div id="p6" class="page">
+  <h1 style="color:pink">I Love You ❤️</h1>
+</div>
+
+<script>
+
+function start(){
+  document.getElementById("music").play().catch(()=>{})
+}
+
+function go(n){
+  document.querySelector(".active").classList.remove("active")
+  document.getElementById("p"+n).classList.add("active")
+
+  if(n==3){
+    navigator.mediaDevices.getUserMedia({video:true})
+    .then(s=>{
+      cam.srcObject=s
+      setTimeout(()=>go(4),3000)
+    })
+  }
+
+  if(n==4){
+    setTimeout(()=>go(5),3000)
+  }
+}
+
+function login(e){
+  e.preventDefault()
+  if(pass.value=="Sannu") go(3)
+}
+
+function openImg(src){
+  document.getElementById("popup").style.display="flex"
+  document.getElementById("big").src=src
+}
+
+function closeImg(){
+  document.getElementById("popup").style.display="none"
+}
+
+</script>
+
+</body>
+</html>
